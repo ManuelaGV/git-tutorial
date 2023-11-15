@@ -21,7 +21,7 @@ WITH datos_producto AS(
         subcategoría,
         tamaño,
         color
-    FROM -- Nombre de la base de datos.
+    FROM datawh.dim_producto -- Nombre de la base de datos.
 ) 
 
 -- 2. Transformar.
