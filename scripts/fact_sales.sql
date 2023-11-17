@@ -1,56 +1,55 @@
-## ETL fde carga de la tabla de hechos fact_sales
+## ETL fact_sale
 
 -- ETL de carga de la tabla de hechos
 -- 3. cargar
 
 INSERT INTO fact_sale (
+    sale_id,
     vendedor_key,
     tienda_key,
     cliente_key,
     producto_key,
-    tiempo_key,
+    sale_fecha,
     descuento,
     precio_compra,
     precio_venta,
     cantidad
 )
-
 -- 1. extraer los datos de la fuente (OLTP)
 WITH datos AS (
     SELECT 
         sale_id,
-        sale_date,
         vendedor_id, 
         tienda_id, 
         cliente_id,
         producto_id,
-        tiempo_value,
+	    sale_fecha,
         descuento,
         precio_compra,
         precio_venta,
         cantidad
-    FROM datawh.fact_sale AS sale  ##Nombre de la base de datos con su tabla fact_sale
-)
-
+    FROM datawh.fact_sale AS sale 
+),
 -- 2. transformar obteniendo los keys
 datos_transformados AS (
     SELECT
-        dim_vendedor.vendedor_key AS vendedor_key,
-        dim_tienda.tienda_key AS tienda_key,
-        dim_cliente.cliente_key AS cliente_key,
-        dim_producto.producto_key AS producto_key,
-        dim_tiempo.tiempo_key AS tiempo_key,
-        descuento,
-        precio_compra,
-        precio_venta,
-        cantidad
+        datos.Sale_id,
+    dim_vendedor.vendedor_key AS vendedor_key,
+    dim_tienda.tienda_key AS tienda_key,
+    dim_cliente.cliente_key AS cliente_key,
+    dim_producto.producto_key AS producto_key,
+    TO_DAYS(datos.sale_fecha) AS  sale_fecha,
+case when datos.descuento is null then datos.precio_venta else datos.precio_venta - (datos.precio_venta*datos.descuento / 100) end as precio_venta,
+    datos.precio_compra,
+    datos.cantidad
     FROM
         datos
+	    JOIN datawh.dim_tiempo as tiempo
+  ON TO_DAYS(datos.Sale_fecha) = tiempo.tiempo_key
         JOIN dim_vendedor ON datos.vendedor_id = dim_vendedor.vendedor_id
         JOIN dim_tienda ON datos.tienda_id = dim_tienda.tienda_id
         JOIN dim_cliente ON datos.cliente_id = dim_cliente.cliente_id
         JOIN dim_producto ON datos.producto_id = dim_producto.producto_id
-        JOIN dim_tiempo ON datos.tiempo_value = dim_tiempo.tiempo_value
 )
 SELECT *
 FROM datos_transformados;

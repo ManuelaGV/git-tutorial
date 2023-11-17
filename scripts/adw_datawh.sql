@@ -78,22 +78,21 @@ CREATE TABLE IF NOT EXISTS dim_cliente (
 ## Hecho sale
 
 CREATE TABLE IF NOT EXISTS fact_sale (
-    sale_key INT(10) INT AUTO_INCREMENT,
-    saleale_id SMALLINT,
-    vendedor_key INT(10) NOT NULL,
-    tienda_key INT(10) NOT NULL,
-    cliente_key INT(10) NOT NULL,
-    producto_key INT(10) NOT NULL,
-    tiempo_key INT(10) NOT NULL,
-    descuento INT(10),
-    precio_compra INT(10) NOT NULL,
-    precio_venta INT(10) NOT NULL,
-    cantidad INT(10) NOT NULL,
+    sale_key INT AUTO_INCREMENT,
+    sale_id SMALLINT,
+    vendedor_key INT NOT NULL,
+    tienda_key INT NOT NULL,
+    cliente_key INT NOT NULL,
+    producto_key INT NOT NULL,
+    sale_fecha DATE NOT NULL,
+    descuento INT,
+    precio_compra INT NOT NULL,
+    precio_venta INT NOT NULL,
+    cantidad INT NOT NULL,
     PRIMARY KEY (sale_key),
     UNIQUE INDEX  sale_id (sale_id),
     FOREIGN KEY (vendedor_key) REFERENCES dim_vendedor(vendedor_key),
     FOREIGN KEY (tienda_key) REFERENCES dim_tienda(tienda_key),
     FOREIGN KEY (cliente_key) REFERENCES dim_cliente(cliente_key),
-    FOREIGN KEY (producto_key) REFERENCES dim_producto(producto_key),
-    FOREIGN KEY (tiempo_key) REFERENCES dim_tiempo(tiempo_key)
+    FOREIGN KEY (producto_key) REFERENCES dim_producto(producto_key)
 )
