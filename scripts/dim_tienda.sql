@@ -2,13 +2,16 @@
 
 -- 3. Cargar.
 INSERT INTO dim_tienda(
-    tienda_key,
-    tienda_id,
-    tienda_nombre,
-    tienda_barrio,
-    tienda_ciudad,
-    tienda_país
-)
+    tienda_key, 
+    tienda_id, 
+    tienda_nombre, 
+    tienda_barrio, 
+    tienda_ciudad, 
+    tienda_país)
+VALUES
+    ('T1', 1001, 'Bicicletas', 'Chapinero', 'Bogotá', 'Colombia'),
+    ('T2', 1002, 'Bycicles', 'Disney', 'Orlando', 'Estados Unidos'),
+    ('T3', 1003, 'Exercise supplies', 'Cabecera', 'Bucaramanga', 'Colombia')
 
 -- 1. Extraer datos.
 WITH datos_tienda AS(
@@ -19,7 +22,7 @@ WITH datos_tienda AS(
         tienda_barrio,
         tienda_ciudad,
         tienda_país
-    FROM -- Nombre de la base de datos.
+    FROM adw_datawh.dim_tienda
 ) 
 
 -- 2. Transformar.

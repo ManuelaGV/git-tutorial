@@ -25,3 +25,18 @@ GROUP BY
 ORDER BY 
     Ingresos_totales DESC
 LIMIT 1;
+
+-- Consulta 3: Hallar los 3 mejores productos vendidos.
+
+SELECT
+    dim_tienda.tienda_key,
+    SUM(fact_sale.cantidad) AS mejor_vendidos
+FROM
+    fact_sale
+INNER JOIN
+    dim_producto ON fact_sale.producto_key = dim_producto.producto_key
+GROUP BY
+    dim_producto.producto_key
+ORDER BY
+    mejor_vendidos DESC
+LIMIT 3;

@@ -15,6 +15,7 @@ INSERT INTO fact_sale (
     precio_venta,
     cantidad
 )
+
 -- 1. extraer los datos de la fuente (OLTP)
 WITH datos AS (
     SELECT 
@@ -30,6 +31,7 @@ WITH datos AS (
         cantidad
     FROM datawh.fact_sale AS sale 
 ),
+
 -- 2. transformar obteniendo los keys
 datos_transformados AS (
     SELECT
